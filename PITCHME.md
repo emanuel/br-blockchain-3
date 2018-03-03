@@ -1,8 +1,9 @@
-## Ethereum Blockchain Intro
+## Programming Smart Contracts with Solidity 
+
 ---
 
 ## Emanuel Mota - @emota7
-CEO - Yari Labs
+Founder of Yari Labs
 
 emanuel@yarilabs.com
 
@@ -13,47 +14,55 @@ emanuel@yarilabs.com
 ## About the Talk 
 
 * Intro 
-* Blockchain Overview
-* Bitcoin vs Ethereum
+* Ethereum Overview
 * Smart Contracts 
-* Solidity 
+* Solidity Crash Course 
+* What is an ERC20 token
+* ICO on Ethereum 
 * Questions 
 
 ---
-## Intro 
+## #BragaBlockchain
+#### Telegram - http://t.me/bragablockchain
 
-Quick questions about the audience
++++
+
+## Some Stats about the audience 
+
+- Developers: 70% of the audience 
+- Knowledge of Solidity programming language? 
+  - Never heard of it before        - 53%
+  - I'm a Beginner                  - 26%
+  - I've tryed it a couple of times - 16%
+  - I'm an Intermediate user        -  5%
+  - I'm a Solidity Guru             -  0%
 
 ---
-## Blockchain Overview
-+++
+### Ethereum 
 
-### Blockchain Overview
-* A blockchain is a globally shared, transactional database. 
-* everyone can read entries in the database 
-* changes can only happen via transactions accepted by all others
-+++
+   <div class="left">
+     Ethereum Network
+     <img src="https://s3-eu-west-1.amazonaws.com/www.yarilabs.com/assets/img/nodes.png" alt="Ethereum Network" height="400">
+  </div>
 
-* transactions are always cryptographically signed
-* transactions are bundled in blocks and chained together 
+  <div class="right">
+    <p>
+      “Each node of the Ethereum network hosts a blockchain database and 
+      a node client capable of executing application code stored on blockchain.
+      Nodes communicate through <span class="highlight">Wire protocol</span> and expose same interface but 
+      can be implemented in different languages.”
+    </p>
+    <br>
+    <p class="lowernote">
+      Excerpt From: Roberto Infante. “Building Ethereum ÐApps” 
+    </p>
+  </div>
 
-![Blockchain](assets/blockchain.png)
----
-
-## Bitcoin vs. Ethereum
-+++
-
-### Bitcoin
-* Cryptocurrency (Bitcoin)
-* Bitcoin Blockchain
-* One shared distributed ledger 
-* Support for a "Script"
-* Limited smart contracts capabilities
 +++
 
 ### Ethereum
-* Cryptocurrency (Ether)
 * Bitcoin like distributed ledger 
+* Cryptocurrency (Ether)
 * Ethereum Virtual Machine (EVM) 
 * Turing complete
 +++
@@ -64,11 +73,12 @@ Quick questions about the audience
   * Storage
   * Logs
   * Events
+
 +++
 
 ### Ethereum
 * Two kinds of accounts 
-  * External Accounts (Wallets controlled by humans)
+  * External Accounts (wallets controlled by humans)
   * Contract Accounts (controlled by code)
   * every account has a balance 
 +++
@@ -77,228 +87,377 @@ Quick questions about the audience
 * Code execution costs GAS 
 * Transaction is a message sent from one account to another and can have a data
   payload
-
+  
 ---
+
 ## Smart Contracts 
+
 +++
-
-### Smart Contracts
-
-> "A smart contract is a computer program that directly controls digital assets
-> and which is run in such an environment that it can be trusted to faithfully execute."
-<div style="text-align: right"> (Vitalik Buterin) </div>
-
----
-## What are the implications !?
----
 
 ### Smart Contracts 
 
 Smart contract flow of data 
 ![smart_contract_flow](assets/sc_flow.png)
-
-+++
-### source for this seccion: https://solidity.readthedocs.io/
 +++
 
 ### Smart Contracts 
-* Contract = code (i.e. functions) and data (its state) that resides at a specific address on the Ethereum blockchain
+* Contract = code (i.e. functions) + data (i.e. state) and resides on the blockchain 
 * EVM is the runtime for Smart Contracts on Ethereum
-* Accounts have a persistent memory area which is called storage: key-value store that maps 256-bit words to 256-bit words
-
+* Accounts have a persistent memory area which is called storage
+* Contracts can neither read nor write to any storage apart from their own
 +++
 
 ### Smart Contracts 
-* Contracts can neither read nor write to any storage apart from its own
-* Contracts also have access to memory - linearly and can be addressed at byte level
-* Memory is expanded by a 256bits when reading or writing & expansion must be paid in gas 
-
-+++
-
-### Smart Contracts 
-* Contracts can call other contracts (they can even call themselves)
+* Contracts can call other contracts 
 * 1024 max call stack depth
-* call (new contexts) vs delegatecall (same context, e.g. same msg.sender +
-msg.value)
-* Events
+* Support Events
 * Contracts can purge themselves from the blockchain (OPCODE selfdestruct)
 
-+++
-
-### Smart Contracts 
-* Contracts are defined through a transaction sent to 0x000.....000
-* Data of the transaction is the compiled contract
 ---
+## Solidity Programming Language
+https://solidity.readthedocs.io/
++++
 
-### Solidity Examples 
-* Available Programming languages 
-  * Solidity (Javascript/Java like)
-  * Serpent (Python inspired)
-  * LLL (Lisp inspired)
-  * some others in the making ...
+### Solidity 
+
+Solidity is a statically typed, contract programming language that has similarities to 
+Javascript, Java and C.
 
 +++
 
-### Simple storage demo
+### Solidity 
+
+Has some contract-specific features like:
+* modifier (guard) clauses
+* event notifiers for listeners 
+* custom global variables.
++++
+
+### Solidity 
+Hello World
 
 ```javascript
-pragma solidity ^0.4.0;
+  pragma solidity ^0.4.19;
 
-contract SimpleStorage {
-    uint storedData;
+  contract HelloWorld {
 
-    function set(uint x) {
-        storedData = x;
-    }
-
-    function get() constant returns (uint) {
-        return storedData;
-    }
-}
+  }
 
 ```
-* Anyone can call *set* anytime overwriting the value. 
-* The history would be preserved on the Blockchain. 
-
-+++
-### Implementing your own coin
-
-```
-pragma solidity ^0.4.0;
-
-contract Coin {
-    // keyword "public" exposes vars to the outside.
-    address public minter;
-    mapping (address => uint) public balances;
-
-    // Events allow light clients to react on changes.
-    event Sent(address from, address to, uint amount);
-
-    // The constructor is run only on creation.
-    function Coin() {
-        minter = msg.sender;
-    }
-// continues on next page ...
-``` 
+<p class="lowernote">
+  <span class="highlight">version pragma</span> — declares the version of the compiler to be used 
+  to avoid breaking changes introduced on future versions
+</p>
 +++
 
-### Implementing your own coin
+### Solidity 
+Statically typed language 
 
-```
-// from previous page ...
-
-    function mint(address receiver, uint amount) {
-        if (msg.sender != minter) return;
-        balances[receiver] += amount;
-    }
-
-    function send(address receiver, uint amount) {
-        if (balances[msg.sender] < amount) return;
-        balances[msg.sender] -= amount;
-        balances[receiver] += amount;
-        Sent(msg.sender, receiver, amount);
-    }
-}
-```
-+++
-### The only way for a contract to vanish from the blockchain is self destruction 
-
-```
-pragma solidity ^0.4.0;
-
-contract owned {
-    function owned() { owner = msg.sender; }
-    address owner;
-}
-
-// a contract can be derived from another contract
-
-contract mortal is owned {
-    function kill() {
-        if (msg.sender == owner) selfdestruct(owner);
-    }
-}
-
-//...
-}
+```javascript
+  contract Example {
+    // This will be stored permanently in the blockchain
+    uint myUnsignedInteger = 100;
+    string name;
+  }
 ```
 
----
-
-### Challenges 
-
-* Transaction takes couple of minutes to be mined
-* Storage and execution is expensive
-* Ecosystem is young
+* `uint data type` is an unsigned integer (non-negative number) 
+* `int data type` is used for signed integers
+* uint has 256 bits we can also have uint8, uint16, uint32 
 +++
 
-Deal with immutability
-*  Test contracts fully before deployment   
-*  Revert payments you don’t expect
-*  Avoid unrecoverable states
+### Solidity 
+More complex data types - Structs 
 
+```javascript
+  struct TokenHolder {
+    uint age;
+    string obs;
+  }
+
+  // Arrays
+  string[5] stringArray;
+  // a dynamic Array - has no fixed size, can keep growing:
+  uint[] dynamicArray;
+  // Public array
+  TokenHolder[] public shareHolders;
+```
 +++
 
-#### Example of a re-entrancy attack problem
+### Solidity 
+Mappings and data type address 
 
+```javascript 
+  // For a financial app, storing a uint that holds the user's account balance:
+  mapping (address => uint) public accountBalance;
+
+  // Or could be used to store / lookup usernames based on userId
+  mapping (uint => string) userIdToName;
 ```
-mapping (address => uint) private balances; 
-    // msg.sender is a user withdrawing funds 
-    function withdraw() public {
-        uint amount = balances[msg.sender];
-        if (!(msg.sender.call.value(amount)())) 
-              { revert; }
-        balances[msg.sender] = 0; 
-    }
+<ul class="lowernote">
+  <li> first example, the key is an address and the value is a uint</li> 
+  <li> second example, the key is a uint and the value is a string</li>
+</ul>
++++
+
+### Solidity 
+Function declarations 
+
+```javascript
+  uint[] scores;
+
+  function addNewScore(string _clientId, uint _score) public {
+     ... 
+     _updateScores(_score);
+  }
+
+  function _updatesScores(string _clientId, uint _number) private {
+    ...
+    scores.push(_number) {
+    ...
+  }
 ```
-This can be exploited by an external contract msg.sender calling
-withdraw again (line 4) while balance is still non zero
++++
 
----
+### Solidity 
+More about functions 
 
-### Interesting technology OFF-CHAIN
+```javascript
+  string greeting = "Whazaaa ?";
 
-* Oracles (ex: http://www.oraclize.it) 
+  function sayHello() public returns (string) {
+      return greeting;
+  }
+```
++++
 
-* Whisper - comunication protocol for DApps
-    (https://github.com/ethereum/wiki/wiki/Whisper)
+### Solidity 
+Function Modifiers 
 
-* P2P Data Storage
-  * Swarm - distributed storage with
-      incentives (https://github.com/ethersphere/swarm)
-  * IPFS - Interplanetary Filesystem (https://ipfs.io)
+```javascript
+  function sayHello() public view returns (string) {
 
+  function _multiply(uint a, uint b) private pure returns (uint) {
+    return a * b;
+  }
 
+  // Functions can return many arguments, and by specifying returned arguments
+  // names we don't need to explicitly return
+  function increment(uint x, uint y) returns (uint x, uint y) {
+      x += 1;
+      y += 1;
+  }
+  // when a function returns multiple values we need to parallel assign 
+  (x1, y1) = increment(1,2);
+```
++++
+
+### Solidity 
+More on functions Modifiers
+
+``` javascript
+  modifier onlyAfter(uint _time) { require (now >= _time); _; }
+  modifier onlyOwner { require(msg.sender == owner) _; }
+
+  // Append right after function declaration
+  function changeOwner(newOwner) onlyAfter(someTime) onlyOwner() {
+      owner = newOwner;
+  }
+```
++++
+### Solidity 
+Payable function Modifier
+
+``` javascript
+  // All functions that receive ether must be marked 'payable'
+  function depositEther() public payable {
+      balances[msg.sender] += msg.value;
+  }
+```
++++
+### Solidity 
+Events 
+<p class="lowernote">
+  Events are a way for a contract to communicate that something happened 
+  on the blockchain to a front-end client that is 'listening' for events 
+</p>
+
+```javascript
+  // declare the event
+  event IntegersAdded(uint x, uint y, uint result);
+
+  function add(uint _x, uint _y) public returns(uint) {
+      uint result = _x + _y;
+      // fire an event to let the app know the function was called:
+      IntegersAdded(_x, _y, result);
+      return result;
+  }
+```
+<p class="lowernote">
+  A javascript implementation would look something like:
+</p>
+```javascript
+  YourContract.IntegersAdded(function(error, result) { 
+    // do something with result
+  }
+```
++++
+
+### Solidity 
+Important global variables 
+
+```javascript
+  this; // address of contract
+  this.balance; // often used at end of contract life to transfer balance 
+```
+```javascript
+  // ** msg - Current message received by the contract ** **
+  msg.sender; // address of sender
+  msg.value; // amount of eth sent to contract (in wei) function should be "payable"
+  msg.data; // bytes, complete call data
+  msg.gas; // remaining gas
+```
+```javascript
+now; // current time (approximately) - uses Unix time
+```
++++
+
+## Important Design Notes
+
+<ul>
+  <li> 
+    <span class="highlight">Obfuscation:</span> 
+       All variables are publicly viewable on blockchain, so anything that is private needs to be obfuscated </li>
+  <li> 
+    <span class="highlight">Storage optimization:</span> 
+       Writing to blockchain is expensive, as data is stored forever</li>
+</ul>
++++
+
+## Important Design Notes
+
+<ul>
+  <li> <span class="highlight">Cron Job:</span> Contracts must be manually called to handle time-based scheduling </li>
+  <li> <span class="highlight">Cost of Gas:</span> the fuel Ethereum DApps run on</li>
+</ul>
 ---
 ## Some Usefull Links
 +++
-### Some Usefull Links
-* Online compiler https://ethereum.github.io/browser-solidity/
-* Another online compiler https://etherchain.org/solc
-* Online tools https://testnet.etherscan.io https://etherscan.io (block explorer, tx
-submit)
 
+### Some Usefull Links
+* Ethereum website https://www.ethereum.org/
+* Online compiler https://remix.ethereum.org/
+* Another online compiler https://etherchain.org/solc
+* Online tools https://testnet.etherscan.io 
+* https://etherscan.io (block explorer, tx submit)
+* EthFiddle https://ethfiddle.com/
 +++
 
 ### Some Usefull Links
 * https://etherchain.org/
-* http://ether.fund/contracts/ (contract repository w/ source code)
-* Infura.io (so you don’t have to run your own node/s)
+* http://infura.io (so you don’t have to run your own node/s)
 * Truffle  https://github.com/ConsenSys/truffle. 
 * Embark https://github.com/iurimatias/embark-framework
 * Open Zeppelin https://openzeppelin.org/
+* https://metamask.io/
+---
+## What is an IRC20 token?
++++
+
+### ERC20 token
+ERC stands for Ethereum Request for Comments
+
+```javascript
+  contract MyToken {
+      /* This creates an array with all balances */
+      mapping (address => uint256) public balanceOf;
+
+      /* Initializes contract with initial supply tokens to the creator */
+      function MyToken(
+          uint256 initialSupply
+          ) {
+          // Give the creator all initial tokens
+          balanceOf[msg.sender] = initialSupply;
+      }
+```
++++
+
+### ERC20 token (continuation)
+
+```javascript
+      /* Send coins */
+      function transfer(address _to, uint256 _value) {
+          // Check if the sender has enough
+          require(balanceOf[msg.sender] >= _value);
+          // Check for overflows
+          require(balanceOf[_to] + _value >= balanceOf[_to]); 
+          balanceOf[msg.sender] -= _value;
+          balanceOf[_to] += _value;
+      }
+  }
+```
+<p class="lowernote"> (from ethereum.org)</p>
++++
+
+### ERC20 token
+<p class="lowernote">
+  An ERC20 token implements the following API
+</p>
+<ul class="lowernote">
+  <li> name </li> 
+  <li> symbol</li>
+  <li> decimals</li>
+  <li> transfer(to, value)</li>
+  <li> transferFrom(from, to, value)</li>
+  <li> approve(spender, value)</li>
+  <li> approveAndCall(spender, value, extraData)</li>
+  <li> burn(value)</li>
+  <li> burnFrom(from, value)</li>
+  <li>  </li>
+  <li> plus trigger a set of events </li>
+</ul>
+<p class="lowernote">
+  a complete spec of a ERC20 Token check  https://ethereum.org/token
+  and https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md
+</p>
+<!-- There are thousands of ethereum based tokens.(https://etherscan.io/tokens) -->
+---
+## How to make an ICO (crowdsale) contract
+---
+### What really is an ICO ?
+
+* An ICO - Initial Coin Offer should really be called:
+token generation event (TGE) as ICO is a term initially coined for currencies
+and now its being used for selling ERC20 (ethereum tokens).
+* And ICO should be done automatically via a SmartContract that implements the
+rules of the token sale.
+
++++
+### ICO
+To buy tokens from a smart contract participants should transfer ethereum
+directly from their wallets to the smart contract address so that the
+smartcontract assigns them the tokens automatically. 
+
+To see an example of a crowdsale contract check: https://ethereum.org/crowdsale
 
 ---
+### Non-fungible tokens ERC-721
 
-### Questions 
+* https://www.cryptokitties.co/marketplace
+* https://cryptozombies.io
 
 ---
+## Questions ?
 
 ### Emanuel Mota 
+### http://yarilabs.com  
+### @yarilabs
 
-emanuel@yarilabs.com
-twitter: @emota7
-github: emanuel
+* emanuel@yarilabs.com 
+* twitter: @emota7
+* github: emanuel
 
-twitter: @yarilabs
-http://yarilabs.com
+---
+## Hands ON in the afternoon :)
+* Prepare your rinkeby testnet wallets!
+* And join BragaBlockchain telegram 

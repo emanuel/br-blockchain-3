@@ -361,7 +361,7 @@ now; // current time (approximately) - uses Unix time
 * Open Zeppelin https://openzeppelin.org/
 * https://metamask.io/
 ---
-## What is an IRC20 token?
+## What is an ERC20 token?
 +++
 
 ### ERC20 token
@@ -421,6 +421,28 @@ ERC stands for Ethereum Request for Comments
   and https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md
 </p>
 <!-- There are thousands of ethereum based tokens.(https://etherscan.io/tokens) -->
++++
+
+### ERC20 token
+
+```javascript
+  contract ERC20Interface {
+     function totalSupply() public constant returns (uint);
+     function balanceOf(address tokenOwner) 
+              public constant returns (uint balance);
+     function allowance(address tokenOwner, address spender) 
+              public constant returns (uint remaining);
+     function transfer(address to, uint tokens) 
+              public returns (bool success);
+     function approve(address spender, uint tokens)
+              public returns (bool success);
+     function transferFrom(address from, address to, uint tokens)
+              public returns (bool success);
+ 
+     event Transfer(address indexed from, address indexed to, uint tokens);
+     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
+ }
+```
 ---
 ## How to make an ICO (crowdsale) contract
 ---
